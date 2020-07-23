@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText InputPhoneNumber,InputPassword;
     private Button  LoginButton;
     private ProgressDialog loadingBar;
+    private TextView AdminLink,NotAdminLink;
 
     private String parentDbName = "Users";
     private CheckBox ChkBoxRememberMe;
@@ -42,6 +44,9 @@ public class LoginActivity extends AppCompatActivity {
         LoginButton= (Button) findViewById(R.id.login_btn);
         InputPhoneNumber = (EditText)findViewById(R.id.login_phone_number_input);
         InputPassword = (EditText)findViewById(R.id.login_password_input);
+        AdminLink = (TextView) findViewById(R.id.admin_panel_link);
+        NotAdminLink = (TextView)findViewById(R.id.not_admin_panel_link);
+
         loadingBar= new ProgressDialog(this);
 
         ChkBoxRememberMe = (CheckBox)findViewById(R.id.remember_me_Chkb);
@@ -51,6 +56,24 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 loginUser();
+            }
+        });
+        AdminLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginButton.setText("Login Admin");
+                AdminLink.setVisibility(View.INVISIBLE);
+                NotAdminLink.setVisibility(View.VISIBLE);
+                parentDbName = "Admins";
+            }
+        });
+        NotAdminLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginButton.setText("Login Admin");
+                AdminLink.setVisibility(View.VISIBLE);
+                NotAdminLink.setVisibility(View.INVISIBLE);
+                parentDbName = "Users";
             }
         });
 
@@ -94,11 +117,18 @@ public class LoginActivity extends AppCompatActivity {
                     Users usersData = dataSnapshot.child(parentDbName).child(phone).getValue(Users.class);
                     if (usersData.getPhone().equals(phone)){
                         if (usersData.getPassword().equals(passWord)){
+                           if (parentDbName.equals("Admins"))
+                               Toast.makeText(LoginActivity.this,"You are now logged in admin",Toast.LENGTH_SHORT).show();
+                            loadingBar.dismiss();
+                            Intent intent = new Intent(LoginActivity.this,AdminCategoryActivity.class);
+                            startActivity(intent);
+
+                        }
+                        else if (parentDbName.equals("Users")){
                             Toast.makeText(LoginActivity.this,"You are now logged in",Toast.LENGTH_SHORT).show();
                             loadingBar.dismiss();
                             Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
                             startActivity(intent);
-
                         }
                         else {
                             loadingBar.dismiss();
