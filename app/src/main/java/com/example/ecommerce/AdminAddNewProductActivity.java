@@ -24,6 +24,8 @@ private EditText InputProductName,InputProductDescription,InputProductPrice;
         AddNewProductButton = (Button)findViewById(R.id.add_new_product);
         InputProductImage =(ImageView)findViewById(R.id.select_product_image);
         InputProductDescription =(EditText)findViewById(R.id.product_description);
+        InputProductPrice = (EditText) findViewById(R.id.product_price);
+        InputProductName = (EditText) findViewById(R.id.product_name);
 
 
 

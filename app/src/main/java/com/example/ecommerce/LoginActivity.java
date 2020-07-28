@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         NotAdminLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginButton.setText("Login Admin");
+                LoginButton.setText("Login");
                 AdminLink.setVisibility(View.VISIBLE);
                 NotAdminLink.setVisibility(View.INVISIBLE);
                 parentDbName = "Users";
@@ -116,19 +116,18 @@ public class LoginActivity extends AppCompatActivity {
                 if (dataSnapshot.child(parentDbName).child(phone).exists()){
                     Users usersData = dataSnapshot.child(parentDbName).child(phone).getValue(Users.class);
                     if (usersData.getPhone().equals(phone)){
-                        if (usersData.getPassword().equals(passWord)){
-                           if (parentDbName.equals("Admins"))
-                               Toast.makeText(LoginActivity.this,"You are now logged in admin",Toast.LENGTH_SHORT).show();
-                            loadingBar.dismiss();
-                            Intent intent = new Intent(LoginActivity.this,AdminCategoryActivity.class);
-                            startActivity(intent);
-
-                        }
-                        else if (parentDbName.equals("Users")){
-                            Toast.makeText(LoginActivity.this,"You are now logged in",Toast.LENGTH_SHORT).show();
-                            loadingBar.dismiss();
-                            Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
-                            startActivity(intent);
+                        if (usersData.getPassword().equals(passWord)) {
+                            if (parentDbName.equals("Admins")) {
+                                Toast.makeText(LoginActivity.this, "You are now logged in admin", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
+                                Intent intent = new Intent(LoginActivity.this, AdminCategoryActivity.class);
+                                startActivity(intent);
+                            } else if (parentDbName.equals("Users")) {
+                                Toast.makeText(LoginActivity.this, "You are now logged in", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
+                                Intent intent = new Intent(LoginActivity.this, homeActivity.class);
+                                startActivity(intent);
+                            }
                         }
                         else {
                             loadingBar.dismiss();
